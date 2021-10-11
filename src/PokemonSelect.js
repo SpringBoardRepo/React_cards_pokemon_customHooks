@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import pokemonList from "./pokemonList";
 import { choice } from "./helpers";
+import { v4 as uuid } from 'uuid';
 
 /* Select element to choose from common pokemon. */
 function PokemonSelect({ add, pokemon = pokemonList }) {
@@ -8,7 +9,18 @@ function PokemonSelect({ add, pokemon = pokemonList }) {
   const handleChange = evt => {
     setPokeIdx(evt.target.value);
   };
-
+  function formatPokemon(data) {
+    return {
+      id: uuid(),
+      front: data.sprites.front_default,
+      back: data.sprites.back_default,
+      name: data.name,
+      stats: data.stats.map(stat => ({
+        value: stat.base_stat,
+        name: stat.stat.name
+      }))
+    };
+  }
   return (
     <div>
       <select onChange={handleChange}>
@@ -18,8 +30,8 @@ function PokemonSelect({ add, pokemon = pokemonList }) {
           </option>
         ))}
       </select>
-      <button onClick={() => add(pokemon[pokeIdx])}>Catch one!</button>
-      <button onClick={() => add(choice(pokemon))}>I'm feeling lucky</button>
+      <button onClick={() => add(formatPokemon, pokemon[pokeIdx])}>Catch one!</button>
+      <button onClick={() => add(formatPokemon, choice(pokemon))}>I'm feeling lucky</button>
     </div>
   );
 }
