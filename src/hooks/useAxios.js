@@ -3,7 +3,10 @@ import axios from "axios";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
 
-const useAxios = (url) => {
+const useAxios = (restOfUrl, url) => {
+
+    // debugging code:
+    console.log('useAxios called: ', url, restOfUrl);
     const [response, setResponse] = useState([]);
 
     const addData = async (formatter = data => data, restOfUrl = "") => {
